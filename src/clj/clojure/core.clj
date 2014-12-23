@@ -5520,9 +5520,9 @@
         ~@(when (and (not= name 'clojure.core) (not-any? #(= :refer-clojure (first %)) references))
             `((clojure.core/refer '~'clojure.core)))
         ~@(map process-reference references))
-        (if (.equals '~name 'clojure.core) 
+       ~(if (.equals name 'clojure.core)
           nil
-          (do (dosync (commute @#'*loaded-libs* conj '~name)) nil)))))
+          `(dosync (commute @#'*loaded-libs* conj '~name) nil)))))
 
 (defmacro refer-clojure
   "Same as (refer 'clojure.core <filters>)"
